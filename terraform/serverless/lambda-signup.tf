@@ -10,10 +10,10 @@ resource "aws_lambda_function" "signup" {
     variables = {
       COGNITO_USER_POOL_ID = aws_cognito_user_pool.user_pool.id
       COGNITO_CLIENT_ID    = aws_cognito_user_pool_client.user_pool_client.id
-      DB_HOST              = var.db_host
-      DB_NAME              = var.db_name
-      DB_USER              = var.db_user
-      DB_PASS              = var.db_pass
+      DB_HOST = data.terraform_remote_state.database.outputs.rds_endpoint
+      DB_NAME = data.terraform_remote_state.database.outputs.rds_db_name
+      DB_USER = data.terraform_remote_state.database.outputs.rds_username
+      DB_PASS = data.terraform_remote_state.database.outputs.rds_password
     }
   }
 
