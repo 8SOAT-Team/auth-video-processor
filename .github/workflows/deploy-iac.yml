@@ -39,8 +39,8 @@ jobs:
 
       - name: Build Lambda .zip files
         run: |
-          cd lambda/login && zip ../../terraform/serverless/lambda_login.zip lambda_login.py && cd -
-          cd lambda/signup && zip ../../terraform/serverless/lambda_signup.zip lambda_signup.py && cd -
+          cd terraform/lambda/login && zip ../../terraform/serverless/lambda_login.zip lambda_login.py && cd -
+          cd terraform/lambda/signup && zip ../../terraform/serverless/lambda_signup.zip lambda_signup.py && cd -
 
 
 
