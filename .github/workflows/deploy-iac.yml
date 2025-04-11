@@ -39,8 +39,9 @@ jobs:
 
       - name: Build Lambda .zip files
         run: |
-          zip -r terraform/serverless/lambda_login.zip lambda/login/*
-          zip -r terraform/serverless/lambda_signup.zip lambda/signup/*
+          zip -r terraform/serverless/lambda_login.zip . -i "lambda/login/*"
+          zip -r terraform/serverless/lambda_signup.zip . -i "lambda/signup/*"
+
 
       - name: Terraform Init and Apply/Destroy
         working-directory: terraform/${{ github.event.inputs.module }}
