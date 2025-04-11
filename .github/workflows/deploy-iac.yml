@@ -39,8 +39,9 @@ jobs:
 
       - name: Build Lambda .zip files
         run: |
-          zip -r terraform/serverless/lambda_login.zip . -i "lambda/login/*"
-          zip -r terraform/serverless/lambda_signup.zip . -i "lambda/signup/*"
+          cd lambda/login && zip ../../terraform/serverless/lambda_login.zip lambda_login.py && cd -
+          cd lambda/signup && zip ../../terraform/serverless/lambda_signup.zip lambda_signup.py && cd -
+
 
 
       - name: Terraform Init and Apply/Destroy
