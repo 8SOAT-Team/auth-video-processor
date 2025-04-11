@@ -1,0 +1,42 @@
+# === Terraform State Files ===
+*.tfstate
+*.tfstate.*
+*.backup
+
+# === Terraform Crash Logs ===
+crash.log
+
+# === Terraform .terraform directory ===
+.terraform/
+
+# === Terraform Plan Files ===
+*.tfplan
+
+# === Sensitive Files ===
+*.tfvars
+*.tfvars.json
+
+# === Terraform Lock File (opcional: ignore só se você usa múltiplas versões ou não quer fixar) ===
+terraform.lock.hcl
+
+# === IDEs & OS Files ===
+*.swp
+*.swo
+*.bak
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# === Zip files for Lambda functions ===
+*.zip
+
+# === Atlantis directories ===
+atlantis.yaml
+# atlantis dir cache (se necessário ignorar)
+# .atlantis/
+
+# === Local overrides or environment files ===
+.env
+.env.*
