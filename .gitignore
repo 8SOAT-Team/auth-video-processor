@@ -29,9 +29,6 @@ Thumbs.db
 .vscode/
 *.iml
 
-# === Zip files for Lambda functions ===
-*.zip
-
 # === Atlantis directories ===
 atlantis.yaml
 # atlantis dir cache (se necessário ignorar)
