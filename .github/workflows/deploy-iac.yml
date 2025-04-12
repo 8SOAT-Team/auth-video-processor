@@ -39,8 +39,20 @@ jobs:
 
       - name: Build Lambda .zip files
         run: |
-          cd terraform/serverless/lambda/login && zip ../../lambda_login.zip lambda_login.py && cd -
-          cd terraform/serverless/lambda/signup && zip ../../lambda_signup.zip lambda_signup.py && cd -
+          # Build login.zip (sem dependência externa)
+          cd terraform/serverless/lambda/login
+          zip ../../lambda_login.zip lambda_login.py
+          cd -
+
+          # Build signup.zip com psycopg2-binary
+          cd terraform/serverless/lambda/signup
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install psycopg2-binary -t .
+          zip -r ../../lambda_signup.zip .
+          deactivate
+          cd -
 
       - name: Terraform Init and Apply/Destroy
         working-directory: terraform/${{ github.event.inputs.module }}
