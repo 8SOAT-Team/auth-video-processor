@@ -37,22 +37,12 @@ jobs:
           mkdir -p ~/.terraform.d
           echo "{\"credentials\":{\"app.terraform.io\":{\"token\":\"$HASHICORP_TOKEN\"}}}" > ~/.terraform.d/credentials.tfrc.json
 
-      - name: Build Lambda .zip files (sem psycopg2)
+      - name: Build Lambda .zip files with psycopg2 via Docker
         run: |
-          cd terraform/serverless/lambda/signup
-          zip ../../lambda_signup.zip lambda_signup.py
-          cd -
+          mkdir -p build/signup && mkdir -p build/login
 
-          cd terraform/serverless/lambda/login
-          zip ../../lambda_login.zip lambda_login.py
-          cd -
+          # Copia os scripts para build local
+          cp terraform/serverless/lambda/signup/lambda_signup.py build/signup/
+          cp terraform/serverless/lambda/login/lambda_login.py build/login/
 
-      - name: Terraform Init and Apply/Destroy
-        working-directory: terraform/${{ github.event.inputs.module }}
-        run: |
-          terraform init
-          if [ "${{ github.event.inputs.action }}" == "apply" ]; then
-            terraform apply -auto-approve
-          else
-            terraform destroy -auto-approve
-          fi
+          docker run --rm -v "$PWD/build/signup":/var/task lambci/lambda:build-python
