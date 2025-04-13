@@ -37,21 +37,25 @@ jobs:
           mkdir -p ~/.terraform.d
           echo "{\"credentials\":{\"app.terraform.io\":{\"token\":\"$HASHICORP_TOKEN\"}}}" > ~/.terraform.d/credentials.tfrc.json
 
-      - name: Build Lambda .zip files
+      - name: Build Lambda .zip files with precompiled psycopg2
         run: |
-          # Build login.zip (sem dependência externa)
-          cd terraform/serverless/lambda/login
-          zip ../../lambda_login.zip lambda_login.py
+          # Caminho da pasta da lambda signup
+          cd terraform/serverless/lambda/signup
+
+          # Baixa o pacote compilado para o Lambda
+          curl -L -o psycopg2.zip https://github.com/jkehler/awslambda-psycopg2/releases/download/v2.9.5/psycopg2-aws-lambda.zip
+
+          # Extrai na pasta atual
+          unzip psycopg2.zip
+
+          # Cria o zip final incluindo tudo (libs + script)
+          zip -r ../../lambda_signup.zip .
+
           cd -
 
-          # Build signup.zip com psycopg2-binary
-          cd terraform/serverless/lambda/signup
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install psycopg2-binary -t .
-          zip -r ../../lambda_signup.zip .
-          deactivate
+          # Lambda login continua simples
+          cd terraform/serverless/lambda/login
+          zip ../../lambda_login.zip lambda_login.py
           cd -
 
       - name: Terraform Init and Apply/Destroy
@@ -62,4 +66,3 @@ jobs:
             terraform apply -auto-approve
           else
             terraform destroy -auto-approve
-          fi
