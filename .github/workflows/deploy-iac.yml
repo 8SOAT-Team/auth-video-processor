@@ -43,19 +43,17 @@ jobs:
           cd terraform/serverless/lambda/signup
 
           git clone --depth 1 https://github.com/jkehler/awslambda-psycopg2.git temp_psycopg2
-
           cp -r temp_psycopg2/psycopg2-3.9/* .
-
           rm -rf temp_psycopg2
 
           zip -r ../../lambda_signup.zip .
 
           cd -
 
+          # Lambda login continua simples
           cd terraform/serverless/lambda/login
           zip ../../lambda_login.zip lambda_login.py
           cd -
-
 
       - name: Terraform Init and Apply/Destroy
         working-directory: terraform/${{ github.event.inputs.module }}
@@ -65,3 +63,4 @@ jobs:
             terraform apply -auto-approve
           else
             terraform destroy -auto-approve
+          fi
