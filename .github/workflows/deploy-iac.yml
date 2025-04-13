@@ -45,4 +45,26 @@ jobs:
           cp terraform/serverless/lambda/signup/lambda_signup.py build/signup/
           cp terraform/serverless/lambda/login/lambda_login.py build/login/
 
-          docker run --rm -v "$PWD/build/signup":/var/task lambci/lambda:build-python
+          # Instala psycopg2-binary em ambiente compatível com Lambda (Amazon Linux 2 + Python 3.9)
+          docker run --rm -v "$PWD/build/signup":/var/task lambci/lambda:build-python3.9 \
+            pip install psycopg2-binary -t .
+
+          # Empacota o ZIP da signup com psycopg2 incluído
+          cd build/signup
+          zip -r ../../terraform/serverless/lambda_signup.zip .
+          cd -
+
+          # Empacota o ZIP da login (sem dependências extras)
+          cd build/login
+          zip -r ../../terraform/serverless/lambda_login.zip .
+          cd -
+
+      - name: Terraform Init and Apply/Destroy
+        working-directory: terraform/${{ github.event.inputs.module }}
+        run: |
+          terraform init
+          if [ "${{ github.event.inputs.action }}" == "apply" ]; then
+            terraform apply -auto-approve
+          else
+            terraform destroy -auto-approve
+          fi
