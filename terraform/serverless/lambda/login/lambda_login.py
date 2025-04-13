@@ -2,15 +2,21 @@ import json
 import boto3
 import os
 
+client = boto3.client('cognito-idp')
+
 def lambda_handler(event, context):
-    client = boto3.client('cognito-idp')
-    body = json.loads(event['body'])
+    print("Evento recebido:", event)
+
+    body = json.loads(event.get('body', '{}'))
 
     username = body.get('username')
     password = body.get('password')
 
     if not username or not password:
-        return {"statusCode": 400, "body": json.dumps({"message": "Credenciais ausentes."})}
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"message": "Credenciais ausentes."})
+        }
 
     try:
         response = client.initiate_auth(
@@ -31,7 +37,24 @@ def lambda_handler(event, context):
             })
         }
 
+    except client.exceptions.UserNotFoundException:
+        return {
+            "statusCode": 404,
+            "body": json.dumps({"message": "Usuário não encontrado"})
+        }
+    except client.exceptions.UserNotConfirmedException:
+        return {
+            "statusCode": 403,
+            "body": json.dumps({"message": "Usuário não confirmado"})
+        }
     except client.exceptions.NotAuthorizedException:
-        return {"statusCode": 401, "body": json.dumps({"message": "Usuário ou senha inválidos"})}
+        return {
+            "statusCode": 401,
+            "body": json.dumps({"message": "Usuário ou senha inválidos"})
+        }
     except Exception as e:
-        return {"statusCode": 500, "body": json.dumps({"message": f"Erro ao autenticar: {str(e)}"})}
+        print("Erro ao autenticar:", str(e))
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"message": f"Erro ao autenticar: {str(e)}"})
+        }
