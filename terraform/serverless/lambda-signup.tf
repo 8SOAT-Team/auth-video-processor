@@ -6,6 +6,8 @@ resource "aws_lambda_function" "signup" {
   filename      = "lambda_signup.zip"
   source_code_hash = filebase64sha256("lambda_signup.zip")
 
+  timeout = 30
+
   environment {
     variables = {
       COGNITO_USER_POOL_ID = aws_cognito_user_pool.user_pool.id
