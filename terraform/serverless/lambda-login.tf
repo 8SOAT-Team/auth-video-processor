@@ -12,10 +12,5 @@ resource "aws_lambda_function" "login" {
     }
   }
 
-  vpc_config {
-    subnet_ids         = data.terraform_remote_state.network.outputs.public_subnet_ids
-    security_group_ids = [data.terraform_remote_state.network.outputs.aws_security_group_id]
-  }
-
   depends_on = [aws_iam_role_policy_attachment.lambda_policy_attachment]
 }
