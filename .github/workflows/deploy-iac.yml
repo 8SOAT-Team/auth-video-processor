@@ -37,20 +37,12 @@ jobs:
           mkdir -p ~/.terraform.d
           echo "{\"credentials\":{\"app.terraform.io\":{\"token\":\"$HASHICORP_TOKEN\"}}}" > ~/.terraform.d/credentials.tfrc.json
 
-      - name: Build Lambda .zip files with precompiled psycopg2
+      - name: Build Lambda .zip files (sem psycopg2)
         run: |
-          # Caminho da pasta da lambda signup
           cd terraform/serverless/lambda/signup
-
-          git clone --depth 1 https://github.com/jkehler/awslambda-psycopg2.git temp_psycopg2
-          cp -r temp_psycopg2/psycopg2-3.9/* .
-          rm -rf temp_psycopg2
-
-          zip -r ../../lambda_signup.zip .
-
+          zip ../../lambda_signup.zip lambda_signup.py
           cd -
 
-          # Lambda login continua simples
           cd terraform/serverless/lambda/login
           zip ../../lambda_login.zip lambda_login.py
           cd -
