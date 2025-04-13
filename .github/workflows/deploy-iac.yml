@@ -43,7 +43,7 @@ jobs:
           cd terraform/serverless/lambda/signup
 
           # Baixa o pacote compilado para o Lambda
-          curl -L -o psycopg2.zip https://github.com/jkehler/awslambda-psycopg2/releases/download/v2.9.5/psycopg2-aws-lambda.zip
+          curl -L -o psycopg2.zip https://github.com/jkehler/awslambda-psycopg2/releases/download/v2.9.5/psycopg2-aws-lambda-3.9.zip
 
           # Extrai na pasta atual
           unzip psycopg2.zip
