@@ -11,12 +11,11 @@ def lambda_handler(event, context):
         body = json.loads(event.get("body", "{}"))
         username = body["username"]
         password = body["password"]
-        email = body["email"]
 
+        # ✅ email = username
         print("Chamando Cognito com:", {
             "client_id": os.environ.get("COGNITO_CLIENT_ID"),
-            "username": username,
-            "email": email
+            "username": username
         })
 
         response = client.sign_up(
@@ -24,7 +23,7 @@ def lambda_handler(event, context):
             Username=username,
             Password=password,
             UserAttributes=[
-                {"Name": "email", "Value": email}
+                {"Name": "email", "Value": username}
             ]
         )
 
