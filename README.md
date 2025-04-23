@@ -51,9 +51,9 @@ terraform apply
 
 ```
 
-### Como Testar os endpoints
+### Como Testar os endpoints?
 
-- Para realizarmos o cadastro e login e signup é similar:
+- Para realizarmos o cadastro e login e signup basta realizar as chamadas com a estrutura similar:
 
 ```bash
 curl -X POST [API-URL}/signup \
