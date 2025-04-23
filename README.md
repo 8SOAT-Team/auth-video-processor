@@ -50,3 +50,24 @@ terraform init
 terraform apply
 
 ```
+
+### Como Testar os endpoints
+
+- Para realizarmos o cadastro e login e signup é similar:
+
+```bash
+curl -X POST [API-URL}/signup \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "darlei@exemplo.com",
+    "password": "SenhaForte123!"
+  }'
+
+
+curl -X POST [API-URL}/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "darlei@exemplo.com",
+    "password": "SenhaForte123!"
+  }'
+```
